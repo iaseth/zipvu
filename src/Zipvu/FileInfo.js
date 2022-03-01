@@ -6,7 +6,6 @@ export default function FileInfo ({
 }) {
 
 	if (!file) return null;
-	console.log(file);
 
 	const rows = ["name", "size", "type"];
 	const rowItems = rows.map((v, i) => {
