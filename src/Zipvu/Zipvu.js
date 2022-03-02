@@ -13,22 +13,27 @@ export default function Zipvu () {
 	const fref = React.useRef(null);
 	const [file, setFile] = React.useState(null);
 
-	const [zip, setZip] = React.useState(null);
-	const [contents, setContents] = React.useState([]);
+	const [data, setData] = React.useState({
+		zip: null,
+		contents: []
+	});
 
 	function handleChange (e) {
 		let newFile = fref.current.files[0];
 		setFile(newFile);
 
 		if (newFile.type.includes("zip")) {
-			const newZip = new JSZip();
-			const newContents = [];
-			newZip.loadAsync(newFile).then(function (newZip) {
-				for (let file in newZip.files) {
-					newContents.push(file);
+			const zip = new JSZip();
+			const contents = [];
+			zip.loadAsync(newFile).then(function (zip) {
+				for (let file in zip.files) {
+					contents.push(file);
 				}
-				setZip(newZip);
-				setContents(newContents.sort());
+
+				setData({
+					zip: zip,
+					contents: contents.sort()
+				});
 			});
 		}
 	}
@@ -42,7 +47,7 @@ export default function Zipvu () {
 						<input ref={fref} type="file" onChange={handleChange} />
 					</div>
 					<FileInfo file={file} />
-					<FileTable {...{zip, contents}} />
+					<FileTable {...data} />
 				</div>
 			</div>
 			<Footer />
