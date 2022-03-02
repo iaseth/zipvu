@@ -1,17 +1,19 @@
 
 
 
+function isImage (filename) {
+	const extension = filename.split(".").pop();
+	const valid_extensions = ["jpg", "jpeg", "png"];
+	return valid_extensions.includes(extension);
+}
+
 export default function FileTable ({
 	zip, contents
 }) {
 
 	const contentItems = contents.map((c, i) => {
 		const f = zip.files[c];
-		if (!f) {
-			console.log(c);
-			return null;
-		}
-		const is_image = c.endsWith(".jpg") || c.endsWith(".jpeg") || c.endsWith(".png");
+		const is_image = isImage(c);
 
 		const image_id = `image_${i}`;
 		if (is_image) {
